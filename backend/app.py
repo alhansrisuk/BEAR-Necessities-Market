@@ -5,7 +5,7 @@ from flask_restplus import Api
 from flask_sendgrid import SendGrid
 
 # [App]
-from backend.extensions import db, migrate, bcrypt, jwt
+from backend.extensions import db, migrate, bcrypt, jwt, mail
 from backend.config import ProductionConfig
 from backend.resources import DEFAULT
 from backend import commands
@@ -76,4 +76,5 @@ def create_mail_server(app: Flask):
     """ Setup flask mailing server """
     # Check for Testing state - set up Sendgrid if not
     if not app.config['TESTING']:
-        app.mail = SendGrid(app)
+        # app.mail = SendGrid(app)
+        mail.init_app(app)

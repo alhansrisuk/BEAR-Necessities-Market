@@ -2,7 +2,9 @@
 from backend.app import create_app, db
 from backend.models.users import UserModel
 from backend.config import TestingConfig
-
+#from backend.extensions import mail
+from unittest.mock import MagicMock
+from backend.utils import email
 # [Python]
 import pytest
 
@@ -29,10 +31,11 @@ def client(app):
     with app.test_client() as client:
         yield client
 
+
 @pytest.yield_fixture(scope='session')
-def mock_sendgrid(app):
-    with app.test_create_sendgrid() as fake_sendgrid:
-        yield fake_sendgrid
+def mail_with_send_email_mocked():
+    email.send_email = MagicMock()
+    return email.send_email 
 
 
 @pytest.fixture(scope='module')
